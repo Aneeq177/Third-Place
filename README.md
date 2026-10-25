@@ -26,6 +26,27 @@ An AI that turns "we should hang out" into a real plan. Friends leave voice note
 - **SerpApi** (Maps/Local, Events) — venues and events
 - **Muse Image** — invite card generation
 
+## Running the frontend (`src/`)
+
+TanStack Start + React, built with Lovable. Mock mode is on by default so the UI works without the backend.
+
+```bash
+npm install
+npm run dev
+```
+
+Open the URL Vite prints (usually `http://localhost:8080`). Create a group, leave notes, generate plans, and vote — all against a browser-local mock store.
+
+To hit the real API instead:
+
+```bash
+# in .env (repo root)
+VITE_API_URL=http://localhost:8787
+VITE_USE_MOCK=false
+```
+
+Then run the backend in another terminal. The frontend only knows `VITE_*` values; never put secrets in those.
+
 ## Running the backend (`server/`)
 
 Node 20+ and TypeScript, built on [Hono](https://hono.dev). State is in memory only; every restart re-seeds a demo group.

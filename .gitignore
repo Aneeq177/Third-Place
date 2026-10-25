@@ -5,11 +5,19 @@ node_modules/
 .env
 .env.*
 !.env.example
+.dev.vars
+*.local
 
 # build output
 dist/
+dist-ssr/
 build/
 *.tsbuildinfo
+.output
+.vinxi
+.tanstack/
+.nitro
+.wrangler/
 
 # uploads / temp audio
 uploads/
@@ -23,3 +31,6 @@ npm-debug.log*
 .DS_Store
 Thumbs.db
 .vscode/
+
+# one-off Lovable export; do not commit
+*.zip

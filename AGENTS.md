@@ -1,5 +1,16 @@
 # AGENTS.md
 
+<!-- LOVABLE:BEGIN -->
+> [!IMPORTANT]
+> This project is connected to [Lovable](https://lovable.dev). Avoid rewriting
+> published git history - force pushing, or rebasing/amending/squashing commits
+> that are already pushed - as it rewrites history on Lovable's side and the
+> user will likely lose their project history.
+>
+> Commits you push to the connected branch sync back to Lovable and show up in
+> the editor, so keep the branch in a working state.
+<!-- LOVABLE:END -->
+
 Rules for every agent (and human) working in this repo. Read this before touching anything.
 
 ## What we're building
@@ -36,3 +47,4 @@ Only edit paths you own. If you need a change elsewhere, ask the owner (or leave
 - Never hardcode API keys, anywhere. Read them from environment variables.
 - API keys stay server-side. The frontend only knows `VITE_API_URL`; anything prefixed `VITE_` ships to the browser, so never put a secret in one.
 - Build against `mock/` until the real endpoint exists.
+- Frontend API calls go only through `src/lib/api.ts` (`VITE_API_URL`; `VITE_USE_MOCK=false` talks to the real backend). `src/shared/types.ts` and `src/mock/*.json` are copies of `shared/` and `mock/`; update the contract first, then refresh the copies.
