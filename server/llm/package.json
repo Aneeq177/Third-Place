@@ -1,0 +1,15 @@
+{
+  "name": "third-place-llm",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "llm:test": "tsx test-chain.ts",
+    "typecheck": "tsc --noEmit -p ../tsconfig.json"
+  },
+  "dependencies": {
+    "ajv": "^8.17.1",
+    "dotenv": "^16.4.7",
+    "openai": "^4.77.0"
+  }
+}
