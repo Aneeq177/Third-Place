@@ -72,10 +72,12 @@ async function geminiGenerate(parts: unknown[], opts: { system?: string; json?: 
       ...(opts.system ? { systemInstruction: { parts: [{ text: opts.system }] } } : {}),
       contents: [{ role: "user", parts }],
       generationConfig: {
-        temperature: opts.temperature ?? 0.2,
         ...(opts.json ? { responseMimeType: "application/json" } : {}),
+        // 3.8 Flash defaults to medium thinking and can sit for minutes; low is enough for JSON extract.
+        thinkingConfig: { thinkingLevel: "low" },
       },
     }),
+    signal: AbortSignal.timeout(45_000),
   });
   if (!res.ok) throw new Error(`Gemini HTTP ${res.status}: ${(await res.text()).slice(0, 300)}`);
   const data = (await res.json()) as { candidates?: { content?: { parts?: { text?: string }[] } }[] };
