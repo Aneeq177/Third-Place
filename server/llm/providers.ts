@@ -32,36 +32,23 @@ function museClient(): OpenAI {
 }
 
 async function museJson(call: JsonCall): Promise<string> {
+  const model = env.museModel();
+  if (!model) throw new Error("MUSE_MODEL is not set");
   const client = museClient();
-  const messages = [
-    { role: "system" as const, content: call.system },
-    { role: "user" as const, content: call.user },
-  ];
-  const base = { model: env.museModel(), messages, temperature: call.temperature ?? 0.2 };
-  try {
-    const res = await client.chat.completions.create({
-      ...base,
-      response_format: call.schema
-        ? { type: "json_schema", json_schema: { name: call.schema.name, strict: true, schema: call.schema.schema } }
-        : { type: "json_object" },
-    });
-    return res.choices[0]?.message?.content ?? "";
-  } catch (e) {
-    // Some OpenAI-compatible servers reject json_schema; retry in plain JSON mode.
-    const status = (e as { status?: number }).status;
-    if (call.schema && (status === 400 || status === 404 || status === 422)) {
-      const res = await client.chat.completions.create({
-        ...base,
-        messages: [
-          { role: "system", content: `${call.system}\n\nJSON schema to follow exactly:\n${JSON.stringify(call.schema.schema)}` },
-          messages[1]!,
-        ],
-        response_format: { type: "json_object" },
-      });
-      return res.choices[0]?.message?.content ?? "";
-    }
-    throw e;
-  }
+  // Muse chat/completions 404s on json_schema (and sometimes json_object) for this key.
+  // Put the schema in the prompt and ask for raw JSON, which Chat Completions accepts.
+  const system = call.schema
+    ? `${call.system}\n\nReply with JSON only, no markdown. Follow this schema exactly:\n${JSON.stringify(call.schema.schema)}`
+    : call.system;
+  const res = await client.chat.completions.create({
+    model,
+    messages: [
+      { role: "system" as const, content: system },
+      { role: "user" as const, content: call.user },
+    ],
+    temperature: call.temperature ?? 0.2,
+  });
+  return res.choices[0]?.message?.content ?? "";
 }
 
 async function museTranscribe(audio: Buffer, mime: string): Promise<string> {

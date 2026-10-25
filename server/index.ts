@@ -21,4 +21,5 @@ serve({ fetch: app.fetch, port: config.port }, (info) => {
       ? "SERPAPI_KEY set: cache first, live calls on a miss"
       : "SERPAPI_KEY not set: cached responses only, mock venues on a miss",
   );
+  log.info("server", `MUSE_MODEL=${process.env.MUSE_MODEL || "(unset)"}`);
 });
