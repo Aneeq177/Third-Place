@@ -49,7 +49,7 @@ async function museJson(call: JsonCall): Promise<string> {
   } catch (e) {
     // Some OpenAI-compatible servers reject json_schema; retry in plain JSON mode.
     const status = (e as { status?: number }).status;
-    if (call.schema && (status === 400 || status === 422)) {
+    if (call.schema && (status === 400 || status === 404 || status === 422)) {
       const res = await client.chat.completions.create({
         ...base,
         messages: [

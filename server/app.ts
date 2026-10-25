@@ -90,7 +90,7 @@ export function createApp(deps: AppDeps) {
     "*",
     cors({
       origin: origins.includes("*") ? "*" : origins,
-      allowMethods: ["GET", "POST", "OPTIONS"],
+      allowMethods: ["GET", "POST", "PUT", "OPTIONS"],
       allowHeaders: ["Content-Type"],
       exposeHeaders: ["Content-Disposition"],
       maxAge: 86400,
