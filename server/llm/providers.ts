@@ -65,22 +65,31 @@ async function museTranscribe(audio: Buffer, mime: string): Promise<string> {
 // ---------- Gemini (REST, no SDK) ----------
 
 async function geminiGenerate(parts: unknown[], opts: { system?: string; json?: boolean; temperature?: number }): Promise<string> {
-  const res = await fetch(`${GEMINI_BASE}/${encodeURIComponent(env.geminiModel())}:generateContent`, {
-    method: "POST",
-    headers: { "content-type": "application/json", "x-goog-api-key": env.geminiKey() },
-    body: JSON.stringify({
-      ...(opts.system ? { systemInstruction: { parts: [{ text: opts.system }] } } : {}),
-      contents: [{ role: "user", parts }],
-      generationConfig: {
-        ...(opts.json ? { responseMimeType: "application/json" } : {}),
-        // 3.8 Flash defaults to medium thinking and can sit for minutes; low is enough for JSON extract.
-        thinkingConfig: { thinkingLevel: "low" },
-      },
-    }),
-    signal: AbortSignal.timeout(45_000),
-  });
-  if (!res.ok) throw new Error(`Gemini HTTP ${res.status}: ${(await res.text()).slice(0, 300)}`);
-  const data = (await res.json()) as { candidates?: { content?: { parts?: { text?: string }[] } }[] };
+  const payload = {
+    ...(opts.system ? { systemInstruction: { parts: [{ text: opts.system }] } } : {}),
+    contents: [{ role: "user", parts }],
+    generationConfig: {
+      ...(opts.json ? { responseMimeType: "application/json" } : {}),
+      // 3.8 Flash defaults to medium thinking and can sit for minutes; low is enough for JSON extract.
+      thinkingConfig: { thinkingLevel: "low" },
+    },
+  };
+  let res: Response | undefined;
+  let lastBody = "";
+  for (let attempt = 0; attempt < 3; attempt++) {
+    if (attempt) await new Promise((r) => setTimeout(r, 800 * attempt));
+    res = await fetch(`${GEMINI_BASE}/${encodeURIComponent(env.geminiModel())}:generateContent`, {
+      method: "POST",
+      headers: { "content-type": "application/json", "x-goog-api-key": env.geminiKey() },
+      body: JSON.stringify(payload),
+      signal: AbortSignal.timeout(45_000),
+    });
+    lastBody = await res.text();
+    if (res.ok) break;
+    if (res.status !== 503) break;
+  }
+  if (!res?.ok) throw new Error(`Gemini HTTP ${res?.status}: ${lastBody.slice(0, 300)}`);
+  const data = JSON.parse(lastBody) as { candidates?: { content?: { parts?: { text?: string }[] } }[] };
   return (data.candidates?.[0]?.content?.parts ?? []).map((p) => p.text ?? "").join("");
 }
 
