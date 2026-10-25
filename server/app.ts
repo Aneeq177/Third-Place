@@ -213,6 +213,28 @@ export function createApp(deps: AppDeps) {
     },
   );
 
+  // ---- PUT /api/groups/:id/constraints ----------------------------------------------
+  app.put("/api/groups/:id/constraints", async (c) => {
+    const group = store.get(c.req.param("id"));
+    const body = await readJson(c.req.raw);
+    const memberName = requireName(body.memberName);
+    const incoming = body.constraints;
+    try {
+      checkConstraints(incoming);
+    } catch {
+      throw new AppError(400, "INVALID_BODY", "constraints must match the Constraints shape");
+    }
+    const member = store.ensureMember(group, memberName);
+    const raw =
+      typeof incoming.rawTranscript === "string" && incoming.rawTranscript.trim()
+        ? incoming.rawTranscript.trim()
+        : (member.constraints?.rawTranscript ?? "");
+    const constraints: Constraints = { ...incoming, memberName: member.name, rawTranscript: raw };
+    member.constraints = constraints;
+    log.info(`note ${group.id}`, `updated constraints for ${member.name} (no re-extract)`);
+    return c.json({ transcript: raw, constraints } satisfies NoteResponse);
+  });
+
   // ---- POST /api/groups/:id/plan ----------------------------------------------------
   app.post("/api/groups/:id/plan", async (c) => {
     const group = store.get(c.req.param("id"));

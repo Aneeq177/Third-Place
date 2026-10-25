@@ -111,6 +111,20 @@ Submit one member's voice note **or** typed text. Submitting again for the same 
 
 Errors: `400 MISSING_AUDIO_OR_TEXT`, `400 AUDIO_TOO_LARGE`, `502 TRANSCRIBE_FAILED`, `502 EXTRACT_FAILED`.
 
+## PUT /api/groups/:id/constraints
+
+Save edited preferences for a member without re-running extraction. Use this after they correct tags, budget, or area.
+
+**Request** (`UpdateConstraintsRequest`)
+
+```json
+{ "memberName": "Priya", "constraints": { "memberName": "Priya", "freeWindows": [], "budgetPerPerson": { "min": 20, "max": 40 }, "vibe": ["coffee shop"], "dietary": [], "accessibility": [], "area": "East Austin", "transport": [], "rawTranscript": "…" } }
+```
+
+The server overwrites `memberName` with the group's stored name. `rawTranscript` is kept if sent, otherwise the previous transcript is reused.
+
+**Response** `200` — `NoteResponse` (same shape as POST /notes).
+
 ## POST /api/groups/:id/plan
 
 Generate 3 ranked plans from all submitted constraints. No request body.

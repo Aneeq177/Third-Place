@@ -9,13 +9,28 @@ import { parseEventWhen } from "../eventTime";
 import { openDuring, parseDayHours } from "../hours";
 import { buildIcs } from "../ics";
 import { mockConstraints, mockPlans } from "../mockData";
-import { createVenueSearcher, mapEvent, mapPlace } from "../serpapi";
+import { buildMapsQueries, createVenueSearcher, mapEvent, mapPlace } from "../serpapi";
 import { chicagoWallToMs, toChicagoISO } from "../time";
 
 test("time: chicago wall clock round trips with the right offset", () => {
   const ms = chicagoWallToMs(2026, 10, 30, 19, 0);
   assert.equal(toChicagoISO(ms), "2026-10-30T19:00:00-05:00");
   assert.equal(toChicagoISO(chicagoWallToMs(2026, 12, 5, 19, 0)), "2026-12-05T19:00:00-06:00");
+});
+
+test("serpapi queries: coffee shop searches coffee shops, not generic restaurants", () => {
+  const queries = buildMapsQueries({
+    memberNames: ["Aneeq"],
+    windows: [],
+    budget: { min: null, max: 15 },
+    dietary: [],
+    accessibility: [],
+    vibes: ["coffee shop"],
+    areas: ["East Austin"],
+    transport: [],
+  });
+  assert.ok(queries.some((q) => /coffee shops? in East Austin/i.test(q)), queries.join(" | "));
+  assert.ok(!queries.some((q) => /^restaurants in /i.test(q)), queries.join(" | "));
 });
 
 test("overlaps: demo group is all free Friday 8-11pm", () => {

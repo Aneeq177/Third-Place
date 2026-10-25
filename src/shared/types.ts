@@ -125,6 +125,12 @@ export interface TextNoteRequest {
   text: string;
 }
 
+/** Save edited preferences without re-running extraction. */
+export interface UpdateConstraintsRequest {
+  memberName: string;
+  constraints: Constraints;
+}
+
 export interface NoteResponse {
   transcript: string;
   constraints: Constraints;

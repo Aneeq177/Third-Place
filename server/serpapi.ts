@@ -82,30 +82,48 @@ const VIBE_TERMS: Record<string, string> = {
   games: "arcade bars board game cafes",
   movies: "movie theaters",
   dancing: "dance clubs",
+  coffee: "coffee shops",
+  "coffee shop": "coffee shops",
+  cafe: "cafes coffee shops",
+  café: "cafes coffee shops",
+  tea: "tea houses coffee shops",
+  brewery: "breweries",
+  museum: "museums",
+  bookstore: "bookstores",
+  food: "restaurants",
 };
 
-function locationLabel(agg: AggregatedConstraints): string {
-  const area = agg.areas[0];
+function formatLoc(area: string): string {
   if (!area) return config.city;
   return /austin/i.test(area) ? `${area}, TX` : `${area}, Austin, TX`;
 }
 
+function placeQuery(vibe: string): string {
+  return VIBE_TERMS[vibe] ?? vibe;
+}
+
+const FOODISH = /food|dinner|lunch|restaurant|eat|brunch/;
+
 export function buildMapsQueries(agg: AggregatedConstraints): string[] {
-  const loc = locationLabel(agg);
+  const locs = (agg.areas.length ? agg.areas.slice(0, 2) : [""]).map(formatLoc);
   const queries: string[] = [];
-  const diet = agg.dietary.join(" ");
-  queries.push(`${diet} restaurants in ${loc}`.replace(/\s+/g, " "));
-  const vibes = agg.vibes.filter((v) => v !== "food").slice(0, 3);
-  for (const v of vibes) queries.push(`${VIBE_TERMS[v] ?? `${v} spots`} in ${loc}`);
-  if (vibes.length === 0) queries.push(`things to do in ${loc}`);
-  return [...new Set(queries)].slice(0, 5);
+  const foodish = agg.vibes.some((v) => FOODISH.test(v));
+  for (const loc of locs) {
+    for (const v of agg.vibes.slice(0, 4)) queries.push(`${placeQuery(v)} in ${loc}`);
+    if (agg.dietary.length && (foodish || agg.vibes.length === 0)) {
+      queries.push(`${agg.dietary.join(" ")} restaurants in ${loc}`);
+    }
+    if (agg.vibes.length === 0 && !agg.dietary.length) queries.push(`cafes and hangout spots in ${loc}`);
+  }
+  return [...new Set(queries.map((q) => q.replace(/\s+/g, " ").trim()))].slice(0, 6);
 }
 
 export function buildEventQueries(agg: AggregatedConstraints): string[] {
   const queries = [`events in ${config.city}`];
-  const vibe = agg.vibes.find((v) => v !== "food");
-  if (vibe) queries.push(`${vibe} events in ${config.city}`);
-  return queries;
+  for (const vibe of agg.vibes.slice(0, 2)) {
+    if (vibe !== "food") queries.push(`${placeQuery(vibe)} events in ${config.city}`);
+  }
+  return [...new Set(queries)].slice(0, 4);
 }
 
 /** google_events only supports coarse date chips; we filter precisely afterwards. */

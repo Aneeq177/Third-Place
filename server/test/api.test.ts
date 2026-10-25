@@ -78,6 +78,30 @@ test("text note replaces constraints; server owns memberName + rawTranscript", a
   assert.equal(((await empty.json()) as any).error.code, "MISSING_AUDIO_OR_TEXT");
 });
 
+test("PUT constraints saves edits without calling extract", async () => {
+  let extracted = 0;
+  const { json, store } = setup({
+    llm: {
+      ...stubLlm,
+      extractConstraints: async (input) => {
+        extracted++;
+        return stubLlm.extractConstraints(input);
+      },
+    },
+  });
+  const before = store.get(DEMO_GROUP_ID).members.find((m) => m.name === "Maya")!.constraints!;
+  const res = await json("PUT", `/api/groups/${DEMO_GROUP_ID}/constraints`, {
+    memberName: "maya",
+    constraints: { ...before, vibe: ["coffee shop"], area: "East Austin" },
+  });
+  assert.equal(res.status, 200);
+  assert.equal(extracted, 0);
+  const body = (await res.json()) as NoteResponse;
+  assert.deepEqual(body.constraints.vibe, ["coffee shop"]);
+  assert.equal(body.constraints.memberName, "Maya");
+  assert.equal(store.get(DEMO_GROUP_ID).members.find((m) => m.name === "Maya")!.constraints!.vibe[0], "coffee shop");
+});
+
 test("audio note: multipart upload is transcribed, bad type and size are rejected", async () => {
   let seen: { bytes: number; mime: string } | null = null;
   const { app } = setup({

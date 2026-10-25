@@ -8,6 +8,7 @@ import type {
   NoteResponse,
   Plan,
   PlanResponse,
+  UpdateConstraintsRequest,
   VoteResponse,
 } from "@/shared/types";
 import mockPlans from "@/mock/plans.sample.json";
@@ -120,6 +121,19 @@ const mock = {
     putMock(g);
     return { transcript, constraints };
   },
+  async updateConstraints(id: string, memberName: string, constraints: Constraints): Promise<NoteResponse> {
+    await delay(200);
+    const g = getMock(id);
+    const m = findOrAddMember(g, memberName);
+    const next: Constraints = {
+      ...constraints,
+      memberName: m.name,
+      rawTranscript: constraints.rawTranscript.trim() || m.constraints?.rawTranscript || "",
+    };
+    m.constraints = next;
+    putMock(g);
+    return { transcript: next.rawTranscript, constraints: next };
+  },
   async generatePlans(id: string): Promise<PlanResponse> {
     await delay(2200);
     const g = getMock(id);
@@ -195,6 +209,13 @@ export const api = {
     fd.append("audio", audio, `note.${audio.type.includes("mp4") ? "mp4" : "webm"}`);
     return request<NoteResponse>(`/api/groups/${id}/notes`, { method: "POST", body: fd });
   },
+  updateConstraints: (id: string, memberName: string, constraints: Constraints) =>
+    USE_MOCK
+      ? mock.updateConstraints(id, memberName, constraints)
+      : request<NoteResponse>(`/api/groups/${id}/constraints`, {
+          ...json({ memberName, constraints } satisfies UpdateConstraintsRequest),
+          method: "PUT",
+        }),
   generatePlans: (id: string) =>
     USE_MOCK ? mock.generatePlans(id) : request<PlanResponse>(`/api/groups/${id}/plan`, { method: "POST" }),
   vote: (id: string, planId: string, memberName: string) =>

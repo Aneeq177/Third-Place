@@ -8,6 +8,7 @@ Rules:
 - Only record what the person actually said. Never invent preferences.
 - dietary and accessibility: include an item ONLY if the person explicitly stated that need. If they did not mention it, return an empty array. Never guess, never infer from the name or the vibe.
 - Tags (vibe, dietary, accessibility) are short and lowercase, e.g. "live music", "outdoors", "vegetarian", "needs seating".
+- If they name a place type, keep that exact type in vibe: "coffee shop", "cafe", "brewery", "museum", "bookstore", "park". Do not collapse "coffee shop" into "chill" or "food".
 - transport: only values from the schema enum, only if mentioned ("I'll bike" -> ["bike"], "no car" alone -> ["transit","rideshare"]).
 - area: the Austin neighborhood they named (e.g. "East Austin", "Zilker"). Empty string if none.
 - memberName and rawTranscript will be overwritten by the server; copy them from the input.
