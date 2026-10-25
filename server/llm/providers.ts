@@ -34,21 +34,26 @@ function museClient(): OpenAI {
 async function museJson(call: JsonCall): Promise<string> {
   const model = env.museModel();
   if (!model) throw new Error("MUSE_MODEL is not set");
-  const client = museClient();
-  // Muse chat/completions 404s on json_schema (and sometimes json_object) for this key.
-  // Put the schema in the prompt and ask for raw JSON, which Chat Completions accepts.
+  // Raw Chat Completions — the OpenAI SDK adds extra fields that Meta rejects as model_not_found.
   const system = call.schema
     ? `${call.system}\n\nReply with JSON only, no markdown. Follow this schema exactly:\n${JSON.stringify(call.schema.schema)}`
     : call.system;
-  const res = await client.chat.completions.create({
-    model,
-    messages: [
-      { role: "system" as const, content: system },
-      { role: "user" as const, content: call.user },
-    ],
-    temperature: call.temperature ?? 0.2,
+  const res = await fetch(`${env.museBaseUrl().replace(/\/$/, "")}/chat/completions`, {
+    method: "POST",
+    headers: { authorization: `Bearer ${env.museKey()}`, "content-type": "application/json" },
+    body: JSON.stringify({
+      model,
+      messages: [
+        { role: "system", content: system },
+        { role: "user", content: call.user },
+      ],
+      temperature: call.temperature ?? 0.2,
+    }),
   });
-  return res.choices[0]?.message?.content ?? "";
+  const text = await res.text();
+  if (!res.ok) throw new Error(`${res.status} ${text.slice(0, 240)}`);
+  const data = JSON.parse(text) as { choices?: { message?: { content?: string } }[] };
+  return data.choices?.[0]?.message?.content ?? "";
 }
 
 async function museTranscribe(audio: Buffer, mime: string): Promise<string> {
