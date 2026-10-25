@@ -1,0 +1,4 @@
+api.3rdplaceonline.tech {
+	encode gzip
+	reverse_proxy server:8787
+}

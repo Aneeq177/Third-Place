@@ -1,0 +1,36 @@
+# Run from the server/ directory on the Vultr VM:  docker compose up -d --build
+# Secrets come from the repo-root .env on the VM (never committed).
+services:
+  server:
+    build:
+      context: ..
+      dockerfile: server/Dockerfile
+    restart: unless-stopped
+    env_file:
+      - path: ../.env
+        required: false
+    environment:
+      PORT: "8787"
+      CORS_ORIGIN: "https://3rdplaceonline.tech,https://www.3rdplaceonline.tech"
+    volumes:
+      - serpapi-cache:/app/server/cache
+    expose:
+      - "8787"
+
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    depends_on:
+      - server
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+
+volumes:
+  serpapi-cache:
+  caddy-data:
+  caddy-config:
