@@ -1,0 +1,251 @@
+[
+  {
+    "id": "p_1",
+    "rank": 1,
+    "title": "Veggie dinner, then live music on South Congress",
+    "summary": "Dinner at Bouldin Creek Cafe, then a set at The Continental Club a few minutes away.",
+    "start": "2026-10-30T20:00:00-05:00",
+    "end": "2026-10-30T23:00:00-05:00",
+    "stops": [
+      {
+        "venue": {
+          "id": "v_bouldin_creek_cafe",
+          "kind": "place",
+          "name": "Bouldin Creek Cafe",
+          "category": "Vegetarian restaurant",
+          "address": "1900 S 1st St, Austin, TX 78704",
+          "area": "Bouldin Creek",
+          "location": {
+            "lat": 30.2482,
+            "lng": -97.7552
+          },
+          "rating": 4.6,
+          "reviewCount": 2900,
+          "priceLevel": 1,
+          "estimatedCostPerPerson": {
+            "min": 12,
+            "max": 20
+          },
+          "hours": "8 AM – 10 PM",
+          "event": null,
+          "tags": [
+            "food",
+            "cozy",
+            "chill"
+          ],
+          "dietary": [
+            "vegetarian",
+            "vegan",
+            "gluten-free"
+          ],
+          "accessibility": [
+            "needs seating"
+          ],
+          "url": "https://www.bouldincreekcafe.com",
+          "imageUrl": null,
+          "source": "mock",
+          "sourceId": null
+        },
+        "start": "2026-10-30T20:00:00-05:00",
+        "end": "2026-10-30T21:30:00-05:00",
+        "activity": "Dinner"
+      },
+      {
+        "venue": {
+          "id": "v_continental_club",
+          "kind": "place",
+          "name": "The Continental Club",
+          "category": "Live music venue",
+          "address": "1315 S Congress Ave, Austin, TX 78704",
+          "area": "South Congress",
+          "location": {
+            "lat": 30.2505,
+            "lng": -97.7494
+          },
+          "rating": 4.7,
+          "reviewCount": 2100,
+          "priceLevel": 2,
+          "estimatedCostPerPerson": {
+            "min": 10,
+            "max": 25
+          },
+          "hours": "4 PM – 2 AM",
+          "event": null,
+          "tags": [
+            "live music",
+            "late night",
+            "drinks"
+          ],
+          "dietary": [],
+          "accessibility": [],
+          "url": "https://www.continentalclub.com",
+          "imageUrl": null,
+          "source": "mock",
+          "sourceId": null
+        },
+        "start": "2026-10-30T21:45:00-05:00",
+        "end": "2026-10-30T23:00:00-05:00",
+        "activity": "Live music"
+      }
+    ],
+    "estimatedCostPerPerson": {
+      "min": 22,
+      "max": 45
+    },
+    "score": 86,
+    "why": [
+      "All three of you are free Friday 8–11pm",
+      "Bouldin Creek Cafe is all vegetarian with gluten-free options, so it works for Maya and Priya",
+      "Live music at The Continental Club was Maya's top ask",
+      "Both stops are near South Congress: easy for Priya by bus or rideshare, a short bike ride for Jordan"
+    ],
+    "tradeoffs": [
+      "The Continental Club is mostly standing room, which is hard on Priya's knee",
+      "The full night can go over Jordan's $20 budget; dinner alone is about $15"
+    ],
+    "votes": [
+      "Maya"
+    ]
+  },
+  {
+    "id": "p_2",
+    "rank": 2,
+    "title": "Dinner and a movie at Alamo South Lamar",
+    "summary": "A Friday night movie with table-service dinner in reserved seats.",
+    "start": "2026-10-30T20:00:00-05:00",
+    "end": "2026-10-30T22:30:00-05:00",
+    "stops": [
+      {
+        "venue": {
+          "id": "v_alamo_south_lamar",
+          "kind": "place",
+          "name": "Alamo Drafthouse South Lamar",
+          "category": "Dine-in movie theater",
+          "address": "1120 S Lamar Blvd, Austin, TX 78704",
+          "area": "South Lamar",
+          "location": {
+            "lat": 30.2563,
+            "lng": -97.7631
+          },
+          "rating": 4.6,
+          "reviewCount": 6200,
+          "priceLevel": 2,
+          "estimatedCostPerPerson": {
+            "min": 25,
+            "max": 45
+          },
+          "hours": "11 AM – 1 AM",
+          "event": null,
+          "tags": [
+            "movies",
+            "food",
+            "cozy"
+          ],
+          "dietary": [
+            "vegetarian",
+            "gluten-free"
+          ],
+          "accessibility": [
+            "needs seating",
+            "wheelchair accessible"
+          ],
+          "url": "https://drafthouse.com/austin/theater/south-lamar",
+          "imageUrl": null,
+          "source": "mock",
+          "sourceId": null
+        },
+        "start": "2026-10-30T20:00:00-05:00",
+        "end": "2026-10-30T22:30:00-05:00",
+        "activity": "Movie and dinner"
+      }
+    ],
+    "estimatedCostPerPerson": {
+      "min": 25,
+      "max": 45
+    },
+    "score": 78,
+    "why": [
+      "All three of you are free Friday 8–11pm",
+      "Reserved seats the whole time, so Priya can sit",
+      "The menu has vegetarian and gluten-free options",
+      "South Lamar is a quick bike ride from Zilker for Jordan"
+    ],
+    "tradeoffs": [
+      "$25–45 is over Jordan's $20 budget",
+      "No live music for Maya and nothing outdoors for Jordan"
+    ],
+    "votes": [
+      "Priya"
+    ]
+  },
+  {
+    "id": "p_3",
+    "rank": 3,
+    "title": "Laid-back night at Cosmic Coffee + Beer Garden",
+    "summary": "Food trucks, drinks and picnic tables in an outdoor garden in South Austin.",
+    "start": "2026-10-30T20:00:00-05:00",
+    "end": "2026-10-30T22:30:00-05:00",
+    "stops": [
+      {
+        "venue": {
+          "id": "v_cosmic_coffee",
+          "kind": "place",
+          "name": "Cosmic Coffee + Beer Garden",
+          "category": "Coffee shop and beer garden",
+          "address": "121 Pickle Rd, Austin, TX 78704",
+          "area": "South Austin",
+          "location": {
+            "lat": 30.234,
+            "lng": -97.763
+          },
+          "rating": 4.7,
+          "reviewCount": 3400,
+          "priceLevel": 1,
+          "estimatedCostPerPerson": {
+            "min": 6,
+            "max": 18
+          },
+          "hours": "7 AM – 12 AM",
+          "event": null,
+          "tags": [
+            "outdoors",
+            "chill",
+            "drinks",
+            "food"
+          ],
+          "dietary": [
+            "vegetarian",
+            "gluten-free"
+          ],
+          "accessibility": [
+            "needs seating",
+            "wheelchair accessible"
+          ],
+          "url": "https://www.cosmiccoffeebeer.com",
+          "imageUrl": null,
+          "source": "mock",
+          "sourceId": null
+        },
+        "start": "2026-10-30T20:00:00-05:00",
+        "end": "2026-10-30T22:30:00-05:00",
+        "activity": "Food and drinks outside"
+      }
+    ],
+    "estimatedCostPerPerson": {
+      "min": 6,
+      "max": 18
+    },
+    "score": 74,
+    "why": [
+      "All three of you are free Friday 8–11pm",
+      "The cheapest option at $6–18, inside everyone's budget",
+      "It's outdoors, which Jordan wanted, with plenty of seating for Priya",
+      "Vegetarian and gluten-free food is available"
+    ],
+    "tradeoffs": [
+      "No live music for Maya",
+      "None of the plans are in East Austin, Maya's preferred area"
+    ],
+    "votes": []
+  }
+]

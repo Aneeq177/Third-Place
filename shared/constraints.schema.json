@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://third-place.local/shared/constraints.schema.json",
+  "title": "Constraints",
+  "description": "What one group member wants, extracted from their voice note or text. Only include what the member actually said; use empty arrays, empty string, or null when something was not mentioned. Never invent preferences.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "memberName",
+    "freeWindows",
+    "budgetPerPerson",
+    "vibe",
+    "dietary",
+    "accessibility",
+    "area",
+    "transport",
+    "rawTranscript"
+  ],
+  "properties": {
+    "memberName": {
+      "type": "string",
+      "description": "The member's name exactly as provided by the app."
+    },
+    "freeWindows": {
+      "type": "array",
+      "description": "Times the member said they are free. Resolve relative days (\"Friday night\") against the reference date given in the prompt. Empty if no time was mentioned.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["start", "end"],
+        "properties": {
+          "start": {
+            "type": "string",
+            "description": "ISO 8601 datetime with UTC offset in America/Chicago, e.g. 2026-10-30T19:00:00-05:00."
+          },
+          "end": {
+            "type": "string",
+            "description": "ISO 8601 datetime with UTC offset in America/Chicago. Must be after start."
+          }
+        }
+      }
+    },
+    "budgetPerPerson": {
+      "type": "object",
+      "description": "Spending range in USD per person. Use null for a bound that was not stated (\"under $30\" gives min null, max 30; \"free stuff\" gives min 0, max 0).",
+      "additionalProperties": false,
+      "required": ["min", "max"],
+      "properties": {
+        "min": { "type": ["number", "null"] },
+        "max": { "type": ["number", "null"] }
+      }
+    },
+    "vibe": {
+      "type": "array",
+      "description": "Short lowercase tags for the kind of outing, e.g. \"live music\", \"outdoors\", \"chill\", \"cozy\", \"active\", \"late night\", \"food\", \"drinks\", \"games\", \"movies\".",
+      "items": { "type": "string" }
+    },
+    "dietary": {
+      "type": "array",
+      "description": "Short lowercase dietary needs, e.g. \"vegetarian\", \"vegan\", \"gluten-free\", \"halal\", \"no alcohol\".",
+      "items": { "type": "string" }
+    },
+    "accessibility": {
+      "type": "array",
+      "description": "Short lowercase accessibility needs, e.g. \"wheelchair accessible\", \"needs seating\", \"quiet\", \"step-free\".",
+      "items": { "type": "string" }
+    },
+    "area": {
+      "type": "string",
+      "description": "Preferred Austin neighborhood or area, e.g. \"East Austin\", \"South Congress\", \"Downtown\". Empty string if no preference."
+    },
+    "transport": {
+      "type": "array",
+      "description": "How the member can get there. Empty if not mentioned.",
+      "items": {
+        "type": "string",
+        "enum": ["walk", "bike", "transit", "rideshare", "drive"]
+      }
+    },
+    "rawTranscript": {
+      "type": "string",
+      "description": "The full transcript or typed text, verbatim."
+    }
+  }
+}

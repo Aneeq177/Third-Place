@@ -1,0 +1,44 @@
+[
+  {
+    "memberName": "Maya",
+    "freeWindows": [
+      { "start": "2026-10-30T18:00:00-05:00", "end": "2026-10-30T23:00:00-05:00" },
+      { "start": "2026-10-31T12:00:00-05:00", "end": "2026-10-31T16:00:00-05:00" }
+    ],
+    "budgetPerPerson": { "min": 20, "max": 40 },
+    "vibe": ["live music", "food", "late night"],
+    "dietary": ["vegetarian"],
+    "accessibility": [],
+    "area": "East Austin",
+    "transport": ["drive", "rideshare"],
+    "rawTranscript": "Hey! I'm free Friday from like six to eleven, or Saturday afternoon. I really want live music, somewhere fun. I'm vegetarian so dinner needs real options. East side would be ideal, and I can drive. Twenty to forty bucks is fine."
+  },
+  {
+    "memberName": "Jordan",
+    "freeWindows": [
+      { "start": "2026-10-30T20:00:00-05:00", "end": "2026-10-31T00:00:00-05:00" },
+      { "start": "2026-10-31T10:00:00-05:00", "end": "2026-10-31T15:00:00-05:00" }
+    ],
+    "budgetPerPerson": { "min": 0, "max": 20 },
+    "vibe": ["outdoors", "active", "chill"],
+    "dietary": [],
+    "accessibility": [],
+    "area": "Zilker",
+    "transport": ["bike"],
+    "rawTranscript": "Friday I'm not off work till eight, Saturday morning to mid-afternoon is wide open. I'd rather be outside doing something, honestly. I'm kind of broke this week so like twenty max. I'll be on my bike, so somewhere around Zilker or South Austin."
+  },
+  {
+    "memberName": "Priya",
+    "freeWindows": [
+      { "start": "2026-10-30T19:00:00-05:00", "end": "2026-10-30T23:00:00-05:00" },
+      { "start": "2026-10-31T17:00:00-05:00", "end": "2026-10-31T22:00:00-05:00" }
+    ],
+    "budgetPerPerson": { "min": 30, "max": 60 },
+    "vibe": ["cozy", "chill", "food"],
+    "dietary": ["gluten-free"],
+    "accessibility": ["needs seating"],
+    "area": "South Congress",
+    "transport": ["transit", "rideshare"],
+    "rawTranscript": "Friday after seven works, or Saturday evening. Something cozy, not a crowded bar please, I need somewhere to sit, my knee's still bad. I'm gluten-free. I don't have a car so near South Congress is easiest. Happy to spend thirty to sixty."
+  }
+]
